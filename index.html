@@ -10,6 +10,11 @@
 	</head>
 	<body>
 		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" data-bind="textInput: filter" placeholder="Filter markers...">
+				</div>
+			</div>
 		    <div class="row">
 		        <div class="col-md-4 col-xs-4 col-lg-3">
 
@@ -21,7 +26,7 @@
 
 		                <div class="collapse" id="collapseNav">
 		                	<h2 id="menu-header">Nearby Locations</h2>
-		                    <ul data-bind="foreach: locationList" class="nav flex-column">
+		                    <ul data-bind="foreach: visiblePlaces" class="nav flex-column">
 		                        <li class="nav-item">
 		                            <span id="list-item" data-bind="text: $data.name"></span>
 		                        </li>

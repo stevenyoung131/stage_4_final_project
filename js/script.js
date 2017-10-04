@@ -119,6 +119,17 @@ var ViewModel = function() {
 		self.locationList.push(new Location(locationItem));
 	});
 
+	console.log(locationList()[1].name());
+
+	this.filter = ko.observable();
+
+	this.visiblePlaces = ko.computed(function() {
+		return this.locationList().filter(function(location) {
+			if (!self.filter() || location.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
+				return location;
+		});
+	}, this);
+
 	var largeInfoWindow = new google.maps.InfoWindow();
 
 	var defaultIcon = makeMarkerIcon('0091ff');
