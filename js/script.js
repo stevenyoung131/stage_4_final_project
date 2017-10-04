@@ -71,7 +71,7 @@ var locationsModel = [
 			location: {lat: 35.198635, lng: -85.159321}
 		},
 		{
-			name: "Home",
+			name: "My Dream Home",
 			location: {lat: 35.224072, lng: -85.149183}
 		},
 		{
@@ -104,7 +104,7 @@ var Location = function(data) {
 var ViewModel = function() {
 	var self = this;
 
-	var markers = ko.observableArray([]);
+	this.markers = ko.observableArray([]);
 
 	var map = new google.maps.Map(document.getElementById('map'), {
 	    zoom: 11,
@@ -113,22 +113,24 @@ var ViewModel = function() {
 	    styles: styles
 	});
 
+	self.listClick = function(marker){
+		populateInfoWindow(marker, largeInfoWindow);
+		    if(bouncingMarker)
+		        bouncingMarker.setAnimation(null);
+		    if(bouncingMarker != marker) {
+		        marker.setAnimation(google.maps.Animation.BOUNCE);
+		        bouncingMarker = marker;
+		    } else
+		        bouncingMarker = null;
+	};
+
 	this.locationList = ko.observableArray([]);
 
 	locationsModel.forEach(function(locationItem) {
 		self.locationList.push(new Location(locationItem));
 	});
 
-	console.log(locationList()[1].name());
-
 	this.filter = ko.observable();
-
-	this.visiblePlaces = ko.computed(function() {
-		return this.locationList().filter(function(location) {
-			if (!self.filter() || location.name().toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
-				return location;
-		});
-	}, this);
 
 	var largeInfoWindow = new google.maps.InfoWindow();
 
@@ -148,13 +150,11 @@ var ViewModel = function() {
 			icon: defaultIcon,
 			id: i
 		});
+
 		markers.push(marker);
 
 		marker.addListener('click', function() {
 			populateInfoWindow(this, largeInfoWindow);
-		});
-
-		marker.addListener('click', function() {
 		    if(bouncingMarker)
 		        bouncingMarker.setAnimation(null);
 		    if(bouncingMarker != this) {
@@ -172,6 +172,13 @@ var ViewModel = function() {
 		});
 		marker.setMap(map);
 	}
+
+	this.visiblePlaces = ko.computed(function() {
+		return this.markers().filter(function(marker) {
+			if (!self.filter() || marker.title.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
+				return marker;
+		});
+	}, this);
 
 	function populateInfoWindow(marker, infowindow) {
 		if (infowindow.marker != marker) {

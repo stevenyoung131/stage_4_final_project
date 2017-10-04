@@ -10,12 +10,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<input type="text" data-bind="textInput: filter" placeholder="Filter markers...">
-				</div>
-			</div>
-		    <div class="row">
+		    <div class="row" id="main">
 		        <div class="col-md-4 col-xs-4 col-lg-3">
 
 		            <div class="bootstrap-vertical-nav">
@@ -25,10 +20,10 @@
 		                </button>
 
 		                <div class="collapse" id="collapseNav">
-		                	<h2 id="menu-header">Nearby Locations</h2>
+		                	<input type="text" data-bind="textInput: filter" placeholder="Filter markers...">
 		                    <ul data-bind="foreach: visiblePlaces" class="nav flex-column">
 		                        <li class="nav-item">
-		                            <span id="list-item" data-bind="text: $data.name"></span>
+		                            <span id="list-item" data-bind="text: $data.title, event: {click: listClick}"></span>
 		                        </li>
 		                    </ul>
 		                </div>
@@ -37,10 +32,6 @@
 
 		        </div>
 		        <div class="col-md-8 col-lg-9">
-		            <h1 id="header">Neighborhood Map</h1>
-
-		            <hr />
-
 		            <div id="map"></div>
 		        </div>
 		    </div>
