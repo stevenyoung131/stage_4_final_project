@@ -24,11 +24,14 @@
 }
 
 #map {
-	min-height: 200px;
+	margin-top: 20px;
 	height: 100%;
-	max-width: 260px;
 }
 
 #info-box {
 	color: black;
+}
+
+#main {
+	min-height: 500px;
 }
