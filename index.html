@@ -11,7 +11,7 @@
 	<body>
 		<div class="container">
 		    <div class="row">
-		        <div class="col-md-4 col-lg-3">
+		        <div class="col-md-4 col-xs-4 col-lg-3">
 
 		            <div class="bootstrap-vertical-nav">
 
@@ -20,18 +20,10 @@
 		                </button>
 
 		                <div class="collapse" id="collapseNav">
-		                    <ul class="nav flex-column">
+		                	<h2 id="menu-header">Nearby Locations</h2>
+		                    <ul data-bind="foreach: locationList" class="nav flex-column">
 		                        <li class="nav-item">
-		                            <h2>Nearby Locations</h2>
-		                        </li>
-		                        <li class="nav-item">
-		                            <a class="nav-link" href="#">Link</a>
-		                        </li>
-		                        <li class="nav-item">
-		                            <a class="nav-link" href="#">Link</a>
-		                        </li>
-		                        <li class="nav-item">
-		                            <a class="nav-link disabled" href="#">Disabled</a>
+		                            <span id="list-item" data-bind="text: $data.name"></span>
 		                        </li>
 		                    </ul>
 		                </div>
@@ -40,7 +32,7 @@
 
 		        </div>
 		        <div class="col-md-8 col-lg-9">
-		            <h1>Neighborhood Map</h1>
+		            <h1 id="header">Neighborhood Map</h1>
 
 		            <hr />
 
@@ -55,10 +47,8 @@
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/knockout-3.4.2.js"></script>
 		<script src="js/bootstrap.min.js"></script>
-		<script async defer
-        src=
-        "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCtelVrOU3vNu4Y8fcQ7h5RDorQRnE6BSo&v=3&callback=initMap">
+		<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCtelVrOU3vNu4Y8fcQ7h5RDorQRnE6BSo&v=3">
     	</script>
-    	<script src="js/script.js"></script>
+		<script src="js/script.js"></script>
 	</body>
 </html>
