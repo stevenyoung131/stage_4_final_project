@@ -3,10 +3,32 @@
     .bootstrap-vertical-nav .collapse {
         display: block;
     }
+
+    .bootstrap-vertical-nav {
+        margin-top: 50px;
+    }
 }
 
-@media (min-width: 768px) {
-            .bootstrap-vertical-nav {
-                margin-top: 50px;
-            }
-        }
+@media (max-width: 767px) {
+	#menu-header {
+		font-size: .8em;
+	}
+
+	#header {
+		font-size: .9em;
+	}
+
+	#list-item {
+		font-size: .7em;
+	}
+}
+
+#map {
+	min-height: 200px;
+	height: 100%;
+	max-width: 260px;
+}
+
+#info-box {
+	color: black;
+}
