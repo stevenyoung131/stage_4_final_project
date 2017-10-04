@@ -113,6 +113,13 @@ var ViewModel = function() {
 	    styles: styles
 	});
 
+	self.reset = function() {
+		for (var i = 0; i < markers().length; i++) {
+			markers()[i].setVisible(true);
+			$("#filter").val('').change();
+		}
+	}
+
 	self.listClick = function(marker){
 		populateInfoWindow(marker, largeInfoWindow);
 		    if(bouncingMarker)
@@ -175,8 +182,11 @@ var ViewModel = function() {
 
 	this.visiblePlaces = ko.computed(function() {
 		return this.markers().filter(function(marker) {
-			if (!self.filter() || marker.title.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
+			if (!self.filter() || marker.title.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
 				return marker;
+			} else {
+				marker.setVisible(false);
+			}
 		});
 	}, this);
 

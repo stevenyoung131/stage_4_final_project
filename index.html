@@ -20,7 +20,7 @@
 		                </button>
 
 		                <div class="collapse" id="collapseNav">
-		                	<input type="text" data-bind="textInput: filter" placeholder="Filter markers...">
+		                	<input type="text" id="filter" data-bind="textInput: filter" placeholder="Filter markers..."><button class="btn-sm btn-primary" data-bind="event: {click: reset}">Reset Filter</button>
 		                    <ul data-bind="foreach: visiblePlaces" class="nav flex-column">
 		                        <li class="nav-item">
 		                            <span id="list-item" data-bind="text: $data.title, event: {click: listClick}"></span>
