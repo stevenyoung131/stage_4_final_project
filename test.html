@@ -1,0 +1,25 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Neighborhood Map</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <input type="text" id="filter" data-bind="textInput: filter" placeholder="Filter markers...">
+        <button class="btn-sm btn-primary" data-bind="event: {click: reset}">Reset Filter</button>
+        <ul data-bind="foreach: visiblePlaces" class="nav flex-column">
+            <li class="nav-item">
+                <span id="list-item" data-bind="text: $data.title, event: {click: listClick}"></span>
+            </li>
+        </ul>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

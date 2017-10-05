@@ -21,11 +21,15 @@
 	#list-item {
 		font-size: .7em;
 	}
+
+	#map-container {
+		margin-top: -125px;
+	}
 }
 
 #map {
 	margin-top: 20px;
-	height: 100%;
+	height: 80%;
 }
 
 #info-box {
