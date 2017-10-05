@@ -67,7 +67,7 @@ var styles = [{
     }, {
         lightness: -25
     }]
-}]
+}];
 
 // Model holding location data for use in ViewModel
 // venueId aquired from and used with foursquare API
@@ -113,7 +113,7 @@ var locationsModel = [{
         lng: -85.154184
     },
     venueId: "4e13c4fa6284431b5351b121"
-}]
+}];
 
 var ViewModel = function() {
     var self = this;
@@ -136,7 +136,7 @@ var ViewModel = function() {
             markers()[i].setVisible(true);
             $("#filter").val('').change();
         }
-    }
+    };
 
     // Function that causes a marker to bounce and info-window to open
     // when a location is clicked from the list outside of the map
@@ -164,6 +164,31 @@ var ViewModel = function() {
     // Initialize global variable for holding current bouncing marker
     var bouncingMarker = null;
 
+    // Funciton for assigning event listeners to each marker
+    var assignListeners = function(marker) {
+        // Listener opens infoWindow and bounces marker on click
+        marker.addListener('click', function(){
+            populateInfoWindow(marker, largeInfoWindow);
+            if (bouncingMarker)
+                bouncingMarker.setAnimation(null);
+            if (bouncingMarker != marker) {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                bouncingMarker = marker;
+            } else {
+                bouncingMarker = null;
+            }
+        });
+
+        // Listeners change color of marker on hover
+        marker.addListener('mouseover', function() {
+            this.setIcon(highlightedIcon);
+        });
+        marker.addListener('mouseout', function() {
+            this.setIcon(defaultIcon);
+        });
+    };
+
+
     // Create Marker object for each location in Model
     for (var i = 0; i < locationsModel.length; i++) {
         var position = locationsModel[i].location;
@@ -181,25 +206,10 @@ var ViewModel = function() {
         // Push created marker Object to markers array
         markers.push(marker);
 
-        // Add listeners to markers that cause the marker to bounce and open info window when clicked
-        marker.addListener('click', function() {
-            populateInfoWindow(this, largeInfoWindow);
-            if (bouncingMarker)
-                bouncingMarker.setAnimation(null);
-            if (bouncingMarker != this) {
-                this.setAnimation(google.maps.Animation.BOUNCE);
-                bouncingMarker = this;
-            } else
-                bouncingMarker = null;
-        });
+        // Assign click, mouseover, and mouseout event listeners to each marker
+        assignListeners(marker);
 
-        // Listeners that change marker color on hover
-        marker.addListener('mouseover', function() {
-            this.setIcon(highlightedIcon);
-        });
-        marker.addListener('mouseout', function() {
-            this.setIcon(defaultIcon);
-        });
+        // Assign markers to map
         marker.setMap(map);
     }
 
@@ -231,7 +241,7 @@ var ViewModel = function() {
             // Sets the location's title in the info window if it exists
             if (marker.title) {
                 innerHTML += '<strong id="info-box">' + marker.title + '</strong>';
-            };
+            }
             // Foursquare API authorization information
             var clientId = "2NQRW41L5Q4VX3JUUQXUVBGKOSAKHKWVABQVQ3F1Q4YS0GOB";
             var clientSecret = "U4E21UUZFYH3JU1O1XB02IDWK12YX21HZMCPAFC0L3WLPYBL";
@@ -248,7 +258,6 @@ var ViewModel = function() {
                 success: function( response ){
                     // On success, populates DOM with response data
                     var data = response.response.venue;
-                    console.log(data);
                     $("#name").text('Name: ' + data.name);
                     $("#category").text('Category: ' + data.categories[0].name);
                     if (data.contact.formattedPhone) {
@@ -265,7 +274,7 @@ var ViewModel = function() {
                 },
                 fail: function(e) {
                     // Throws an alert if foursquare API call fails
-                    alert("There was a problem reaching the foursquare API.  Please try your request again.")
+                    alert("There was a problem reaching the foursquare API.  Please try your request again.");
                 }
             });
             innerHTML += '</div>';
@@ -286,7 +295,7 @@ var ViewModel = function() {
             new google.maps.Size(21, 34));
         return markerImage;
     }
-}
+};
 
 // Adding the .on('load') functionality allows the async map call to complete before applying bindings
 $(window).on('load', function() {
