@@ -7,6 +7,7 @@ neighborhood-map-project
 ## Instructions to run the website
 	* The website utelizes the google maps and foursquare API's
 	* All required files are included in the git repository
+	* Model data is contained in model.js
 	* Dependancies
 		* Bootstrap
 		* JQuery

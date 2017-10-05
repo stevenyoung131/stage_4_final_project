@@ -1,120 +1,3 @@
-// Styles variable that holds style data for use in initializing google map
-var styles = [{
-    featureType: 'water',
-    stylers: [{
-        color: '#19a0d8'
-    }]
-}, {
-    featureType: 'administrative',
-    elementType: 'labels.text.stroke',
-    stylers: [{
-        color: '#ffffff'
-    }, {
-        weight: 6
-    }]
-}, {
-    featureType: 'administrative',
-    elementType: 'labels.text.fill',
-    stylers: [{
-        color: '#e85113'
-    }]
-}, {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
-    stylers: [{
-        color: '#efe9e4'
-    }, {
-        lightness: -40
-    }]
-}, {
-    featureType: 'transit.station',
-    stylers: [{
-        weight: 9
-    }, {
-        hue: '#e85113'
-    }]
-}, {
-    featureType: 'road.highway',
-    elementType: 'labels.icon',
-    stylers: [{
-        visibility: 'off'
-    }]
-}, {
-    featureType: 'water',
-    elementType: 'labels.text.stroke',
-    stylers: [{
-        lightness: 100
-    }]
-}, {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [{
-        lightness: -100
-    }]
-}, {
-    featureType: 'poi',
-    elementType: 'geometry',
-    stylers: [{
-        visibility: 'on'
-    }, {
-        color: '#f0e4d3'
-    }]
-}, {
-    featureType: 'road.highway',
-    elementType: 'geometry.fill',
-    stylers: [{
-        color: '#efe9e4'
-    }, {
-        lightness: -25
-    }]
-}];
-
-// Model holding location data for use in ViewModel
-// venueId aquired from and used with foursquare API
-var locationsModel = [{
-    name: "Food City",
-    location: {
-        lat: 35.198635,
-        lng: -85.159321
-    },
-    venueId: "562309d8498e469eb52874c0"
-}, {
-    name: "Allen Elementary School",
-    location: {
-        lat: 35.23704,
-        lng: -85.152091
-    },
-    venueId: "4d514a67d7eaa143653e710f"
-}, {
-    name: "Loftis Middle School",
-    location: {
-        lat: 35.194835,
-        lng: -85.160325
-    },
-    venueId: "4d5dbc2bef4db60c077b0ede"
-}, {
-    name: "Dallas Bay Vape",
-    location: {
-        lat: 35.199099,
-        lng: -85.162415
-    },
-    venueId: "5649193f498e7c1cac9ab452"
-}, {
-    name: "Poe's Tavern Park",
-    location: {
-        lat: 35.246281,
-        lng: -85.188122
-    },
-    venueId: "504214e3e4b0047a41ac315f"
-}, {
-    name: "Chester Frost Park",
-    location: {
-        lat: 35.178897,
-        lng: -85.154184
-    },
-    venueId: "4e13c4fa6284431b5351b121"
-}];
-
 var ViewModel = function() {
     var self = this;
 
@@ -134,7 +17,7 @@ var ViewModel = function() {
     self.reset = function() {
         for (var i = 0; i < markers().length; i++) {
             markers()[i].setVisible(true);
-            $("#filter").val('').change();
+            self.filter('');
         }
     };
 
@@ -187,6 +70,9 @@ var ViewModel = function() {
             this.setIcon(defaultIcon);
         });
     };
+
+    // Create an empty observable to host foursquare response info
+    this.fsdata = ko.observable();
 
 
     // Create Marker object for each location in Model
@@ -256,23 +142,10 @@ var ViewModel = function() {
                     v: "20180801",
                 },
                 success: function( response ){
-                    // On success, populates DOM with response data
-                    var data = response.response.venue;
-                    $("#name").text('Name: ' + data.name);
-                    $("#category").text('Category: ' + data.categories[0].name);
-                    if (data.contact.formattedPhone) {
-                        $("#phone").text('Phone: ' + data.contact.formattedPhone);
-                    } else {
-                        $("#phone").text('Phone: No Number Listed');
-                    }
-                    $("#likes").text('Likes: ' + data.likes.count);
-                    if (data.tips.count !== 0) {
-                        $("#tips").text('Tips: ' + data.tips.groups[0].items[0].text);
-                    } else {
-                        $("#tips").text('Top Tip: No Current Tips');
-                    }
+                    // On success, creates ko.observable containing response
+                    self.fsdata(response.response.venue);
                 },
-                fail: function(e) {
+                error: function(e) {
                     // Throws an alert if foursquare API call fails
                     alert("There was a problem reaching the foursquare API.  Please try your request again.");
                 }
@@ -296,6 +169,11 @@ var ViewModel = function() {
         return markerImage;
     }
 };
+
+// Error funciton for Google Maps API call
+var onError = function() {
+    alert('There was a problem loading the map.  Please try the request again.');
+}
 
 // Adding the .on('load') functionality allows the async map call to complete before applying bindings
 $(window).on('load', function() {
