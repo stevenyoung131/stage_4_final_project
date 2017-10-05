@@ -251,6 +251,9 @@ var ViewModel = function() {
                     } else {
                         $("#tips").text('Top Tip: No Current Tips');
                     }
+                },
+                fail: function(e) {
+                    alert("There was a problem reaching the foursquare API.  Please try your request again.")
                 }
             });
             innerHTML += '</div>';
